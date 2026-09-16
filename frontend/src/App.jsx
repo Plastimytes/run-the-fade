@@ -7,6 +7,7 @@ import Profile from './pages/Profile.jsx';
 import Swipe from './pages/Swipe.jsx';
 import Matches from './pages/Matches.jsx';
 import Fights from './pages/Fights.jsx';
+import Fighters from './pages/Fighters.jsx';
 import OverseerDashboard from './pages/OverseerDashboard.jsx';
 import Rankings from './pages/Rankings.jsx';
 import MapPage from './pages/Map.jsx';
@@ -31,6 +32,7 @@ export default function App() {
       <Route path="/swipe" element={<Protected><Swipe /></Protected>} />
       <Route path="/matches" element={<Protected><Matches /></Protected>} />
       <Route path="/fights" element={<Protected><Fights /></Protected>} />
+      <Route path="/fighters" element={<Protected><Fighters /></Protected>} />
       <Route path="/map" element={<Protected><MapPage /></Protected>} />
       <Route path="/overseer" element={<Protected><OverseerDashboard /></Protected>} />
       <Route path="/rankings" element={<Protected><Rankings /></Protected>} />

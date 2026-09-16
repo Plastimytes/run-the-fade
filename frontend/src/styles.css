@@ -79,63 +79,85 @@ button { font-family: var(--font-body); cursor: pointer; }
 .nav-link:hover { background: var(--surface-raised); color: var(--text); }
 .nav-link.active { background: var(--accent); color: var(--accent-ink); }
 
-.nav-section-title {
-  font-size: 10px;
-  color: var(--text-muted);
-  letter-spacing: 0.5px;
-  text-transform: uppercase;
-  font-family: var(--font-mono);
-  margin: 18px 8px 10px;
+.fighter-page-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+  gap: 18px;
 }
 
-.nav-fighters {
-  margin-top: 8px;
+.fighter-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  padding: 18px;
   display: flex;
   flex-direction: column;
-  gap: 10px;
-  max-height: 360px;
-  overflow-y: auto;
-  padding-right: 4px;
+  gap: 14px;
+  clip-path: polygon(var(--cut) 0, 100% 0, 100% calc(100% - var(--cut)), calc(100% - var(--cut)) 100%, 0 100%, 0 var(--cut));
 }
 
-.sidebar-fighter-card {
-  background: var(--surface-raised);
-  border: 1px solid var(--border);
-  padding: 12px;
-  clip-path: polygon(var(--cut-sm) 0, 100% 0, 100% calc(100% - var(--cut-sm)), calc(100% - var(--cut-sm)) 100%, 0 100%, 0 var(--cut-sm));
-}
-
-.sidebar-fighter-header {
+.fighter-card-header {
   display: flex;
   align-items: center;
-  gap: 10px;
-  margin-bottom: 10px;
+  gap: 12px;
 }
 
-.sidebar-fighter-actions {
+.fighter-card-photo {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  object-fit: cover;
+  border: 1px solid var(--border);
+  background: var(--surface-raised);
+  flex-shrink: 0;
+}
+
+.placeholder-fighter-photo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 22px;
+}
+
+.fighter-card-main {
+  min-width: 0;
+}
+
+.fighter-card-name {
+  font-family: var(--font-display);
+  font-size: 26px;
+  line-height: 1;
+  letter-spacing: 0.3px;
+}
+
+.fighter-card-meta {
+  color: var(--text-muted);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  margin-top: 4px;
+}
+
+.fighter-card-actions {
   display: flex;
   flex-wrap: wrap;
-  gap: 6px;
+  gap: 8px;
 }
 
-.sidebar-button {
+.fighter-card-actions .btn {
   flex: 1 1 0;
-  min-width: 0;
-  padding: 8px 8px;
-  font-size: 10px;
+  min-width: 88px;
 }
 
-.fighter-detail-panel {
-  margin-top: 10px;
-  padding-top: 10px;
+.fighter-inline-panel {
+  margin-top: 4px;
+  padding-top: 12px;
   border-top: 1px solid var(--border);
   display: flex;
   flex-direction: column;
   gap: 8px;
 }
 
-.compact-row {
-  margin-bottom: 2px;
+.small-copy {
+  font-size: 11px;
 }
 
 .sidebar-textarea {
@@ -156,7 +178,7 @@ button { font-family: var(--font-body); cursor: pointer; }
 }
 
 .sidebar-status {
-  margin-top: 12px;
+  margin: 12px 0 18px;
   background: rgba(35,241,224,0.08);
   border: 1px solid var(--cyan);
   color: var(--cyan);
@@ -164,17 +186,6 @@ button { font-family: var(--font-body); cursor: pointer; }
   padding: 8px 10px;
   font-family: var(--font-mono);
   clip-path: polygon(var(--cut-sm) 0, 100% 0, 100% calc(100% - var(--cut-sm)), calc(100% - var(--cut-sm)) 100%, 0 100%, 0 var(--cut-sm));
-}
-
-.avatar-placeholder-inline {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background: var(--surface);
-}
-
-.small-copy {
-  font-size: 11px;
 }
 
 .nav-footer {
