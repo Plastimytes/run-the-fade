@@ -1,4 +1,5 @@
-const BASE_URL = import.meta.env.VITE_API_URL || 'http://localhost:4000/api';
+const isLocalHost = typeof window !== 'undefined' && ['localhost', '127.0.0.1'].includes(window.location.hostname);
+const BASE_URL = import.meta.env.VITE_API_URL || (isLocalHost ? 'http://localhost:4000/api' : 'https://run-the-fade.onrender.com/api');
 export const ORIGIN_URL = BASE_URL.replace(/\/api\/?$/, '');
 
 function getToken() {
@@ -17,11 +18,18 @@ async function request(path, { method = 'GET', body, auth = true } = {}) {
     const token = getToken();
     if (token) headers.Authorization = `Bearer ${token}`;
   }
-  const res = await fetch(`${BASE_URL}${path}`, {
-    method,
-    headers,
-    body: body ? JSON.stringify(body) : undefined,
-  });
+
+  let res;
+  try {
+    res = await fetch(`${BASE_URL}${path}`, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : undefined,
+    });
+  } catch {
+    throw new Error('API unavailable — check the backend connection and VITE_API_URL.');
+  }
+
   const data = await res.json().catch(() => ({}));
   if (!res.ok) throw new Error(data.error || 'Something went wrong');
   return data;
