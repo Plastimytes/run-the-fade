@@ -31,6 +31,7 @@ export const api = {
   signup: (payload) => request('/auth/signup', { method: 'POST', body: payload, auth: false }),
   login: (payload) => request('/auth/login', { method: 'POST', body: payload, auth: false }),
 
+  getAllFighters: () => request('/fighters'),
   getMe: () => request('/fighters/me'),
   updateMe: (payload) => request('/fighters/me', { method: 'PUT', body: payload }),
   getFighter: (id) => request(`/fighters/${id}`),
@@ -51,6 +52,7 @@ export const api = {
   },
 
   swipe: (swiped_id, direction) => request('/swipes', { method: 'POST', body: { swiped_id, direction } }),
+  ensureMatch: (user_id) => request('/swipes/ensure-match', { method: 'POST', body: { user_id } }),
   getMatches: () => request('/swipes/matches'),
 
   createLocation: (payload) => request('/locations', { method: 'POST', body: payload }),

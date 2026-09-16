@@ -79,6 +79,104 @@ button { font-family: var(--font-body); cursor: pointer; }
 .nav-link:hover { background: var(--surface-raised); color: var(--text); }
 .nav-link.active { background: var(--accent); color: var(--accent-ink); }
 
+.nav-section-title {
+  font-size: 10px;
+  color: var(--text-muted);
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  font-family: var(--font-mono);
+  margin: 18px 8px 10px;
+}
+
+.nav-fighters {
+  margin-top: 8px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  max-height: 360px;
+  overflow-y: auto;
+  padding-right: 4px;
+}
+
+.sidebar-fighter-card {
+  background: var(--surface-raised);
+  border: 1px solid var(--border);
+  padding: 12px;
+  clip-path: polygon(var(--cut-sm) 0, 100% 0, 100% calc(100% - var(--cut-sm)), calc(100% - var(--cut-sm)) 100%, 0 100%, 0 var(--cut-sm));
+}
+
+.sidebar-fighter-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+
+.sidebar-fighter-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.sidebar-button {
+  flex: 1 1 0;
+  min-width: 0;
+  padding: 8px 8px;
+  font-size: 10px;
+}
+
+.fighter-detail-panel {
+  margin-top: 10px;
+  padding-top: 10px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.compact-row {
+  margin-bottom: 2px;
+}
+
+.sidebar-textarea {
+  width: 100%;
+  min-height: 80px;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  color: var(--text);
+  padding: 10px 12px;
+  border-radius: 8px;
+  resize: vertical;
+  font-family: var(--font-body);
+}
+
+.sidebar-textarea:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.sidebar-status {
+  margin-top: 12px;
+  background: rgba(35,241,224,0.08);
+  border: 1px solid var(--cyan);
+  color: var(--cyan);
+  font-size: 12px;
+  padding: 8px 10px;
+  font-family: var(--font-mono);
+  clip-path: polygon(var(--cut-sm) 0, 100% 0, 100% calc(100% - var(--cut-sm)), calc(100% - var(--cut-sm)) 100%, 0 100%, 0 var(--cut-sm));
+}
+
+.avatar-placeholder-inline {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--surface);
+}
+
+.small-copy {
+  font-size: 11px;
+}
+
 .nav-footer {
   margin-top: auto;
   padding: 12px 8px 0;

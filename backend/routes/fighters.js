@@ -98,6 +98,20 @@ router.post('/me/photo', (req, res) => {
   });
 });
 
+// GET all fighters signed up to the app, excluding self
+router.get('/', (req, res) => {
+  const rows = db
+    .prepare(
+      `SELECT fp.*, u.name FROM fighter_profiles fp
+       JOIN users u ON u.id = fp.user_id
+       WHERE fp.user_id != ?
+       ORDER BY u.name ASC`
+    )
+    .all(req.userId);
+
+  res.json({ fighters: rows.map((row) => rowToProfile(row)) });
+});
+
 // GET nearby fighters who are "looking", excluding self and already-swiped
 router.get('/nearby', (req, res) => {
   const { weight_class, fighting_style, radius_km } = req.query;

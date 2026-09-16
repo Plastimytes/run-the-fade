@@ -53,6 +53,32 @@ router.post('/', (req, res) => {
   res.status(201).json({ matched, match });
 });
 
+router.post('/ensure-match', (req, res) => {
+  const targetId = Number(req.body?.user_id);
+  if (!targetId || Number.isNaN(targetId)) {
+    return res.status(400).json({ error: 'user_id is required' });
+  }
+  if (targetId === req.userId) {
+    return res.status(400).json({ error: "You can't start a match with yourself" });
+  }
+
+  const [userA, userB] = [req.userId, targetId].sort((a, b) => a - b);
+  const existing = db.prepare('SELECT * FROM matches WHERE user_a = ? AND user_b = ?').get(userA, userB);
+  if (existing) {
+    return res.json({ match: existing });
+  }
+
+  const info = db.prepare('INSERT INTO matches (user_a, user_b) VALUES (?, ?)').run(userA, userB);
+  const match = db.prepare('SELECT * FROM matches WHERE id = ?').get(info.lastInsertRowid);
+
+  const me = db.prepare('SELECT name FROM users WHERE id = ?').get(req.userId);
+  const them = db.prepare('SELECT name FROM users WHERE id = ?').get(targetId);
+  notify(targetId, 'match', `${me.name} opened the door`, `You can now message ${me.name} and schedule a fade.`, '/matches');
+  notify(req.userId, 'match', 'Match ready', `You can now message ${them.name} and schedule a fade.`, '/matches');
+
+  res.status(201).json({ match });
+});
+
 router.get('/matches', (req, res) => {
   const rows = db
     .prepare(
