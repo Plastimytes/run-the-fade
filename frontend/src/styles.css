@@ -703,6 +703,35 @@ button { font-family: var(--font-body); cursor: pointer; }
 .map-legend span { display: inline-flex; align-items: center; gap: 6px; }
 .legend-dot { width: 10px; height: 10px; border-radius: 50%; display: inline-block; }
 
+/* ---------- Landing page ---------- */
+.landing {
+  min-height: 100vh;
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  overflow: hidden;
+  background: var(--bg);
+}
+.landing-hero { position: absolute; inset: 0; z-index: 0; }
+.landing-hero-img { width: 100%; height: 100%; object-fit: cover; object-position: center 30%; display: block; }
+.landing-hero-overlay {
+  position: absolute;
+  inset: 0;
+  background:
+    linear-gradient(0deg, var(--bg) 8%, rgba(12,12,14,0.55) 45%, rgba(12,12,14,0.15) 75%),
+    linear-gradient(100deg, rgba(12,12,14,0.35) 0%, transparent 55%);
+}
+.landing-content { position: relative; z-index: 1; width: 100%; padding: 48px 40px 56px; max-width: 640px; }
+.landing-brand { display: flex; align-items: center; gap: 10px; font-family: var(--font-display); font-size: 20px; letter-spacing: 0.5px; margin-bottom: 28px; }
+.landing-brand-accent { color: var(--accent); }
+.landing-title { font-family: var(--font-display); font-size: 56px; line-height: 0.95; letter-spacing: 0.5px; margin: 0 0 16px; border-left: 5px solid var(--accent); padding-left: 18px; }
+.landing-tagline { color: var(--text-muted); font-size: 15px; line-height: 1.5; max-width: 440px; margin: 0 0 28px; padding-left: 23px; }
+.landing-actions { display: flex; gap: 12px; margin-bottom: 40px; padding-left: 23px; }
+.landing-btn { width: auto; padding: 13px 26px; }
+.landing-features { display: flex; flex-direction: column; gap: 10px; padding-left: 23px; border-left: 1px solid var(--border); margin-left: 4px; }
+.landing-feature { font-family: var(--font-mono); font-size: 12px; color: var(--text-muted); display: flex; align-items: baseline; gap: 10px; }
+.landing-feature-num { color: var(--cyan); font-weight: 700; }
+
 @media (max-width: 720px) {
   .app-shell { flex-direction: column; }
   .nav { width: 100%; flex-direction: row; align-items: center; overflow-x: auto; padding: 12px; }
@@ -710,4 +739,7 @@ button { font-family: var(--font-body); cursor: pointer; }
   .nav-footer { display: none; }
   .main { padding: 20px; }
   .grid-2 { grid-template-columns: 1fr; }
+  .landing-title { font-size: 38px; }
+  .landing-content { padding: 32px 20px 40px; }
+  .landing-actions { flex-direction: column; }
 }
