@@ -29,6 +29,9 @@ router.post('/', (req, res) => {
     const reciprocal = db
       .prepare("SELECT * FROM swipes WHERE swiper_id = ? AND swiped_id = ? AND direction = 'like'")
       .get(swiped_id, req.userId);
+
+    const me = db.prepare('SELECT name FROM users WHERE id = ?').get(req.userId);
+
     if (reciprocal) {
       const [a, b] = [req.userId, Number(swiped_id)].sort((x, y) => x - y);
       const info = db
@@ -37,10 +40,13 @@ router.post('/', (req, res) => {
       matched = true;
       match = db.prepare('SELECT * FROM matches WHERE user_a = ? AND user_b = ?').get(a, b);
 
-      const me = db.prepare('SELECT name FROM users WHERE id = ?').get(req.userId);
       const them = db.prepare('SELECT name FROM users WHERE id = ?').get(swiped_id);
       notify(req.userId, 'match', `It's a match!`, `You and ${them.name} are both hot for a fade.`, '/matches');
       notify(swiped_id, 'match', `It's a match!`, `You and ${me.name} are both hot for a fade.`, '/matches');
+    } else {
+      // Not a match yet — let the other fighter know someone's interested,
+      // same as tapping the fire icon does on a dating app.
+      notify(swiped_id, 'like', `${me.name} tapped your fire icon`, 'Swipe on them back to lock in a match.', '/swipe');
     }
   }
 
