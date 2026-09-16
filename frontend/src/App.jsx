@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './AuthContext.jsx';
+import Landing from './pages/Landing.jsx';
 import Login from './pages/Login.jsx';
 import Signup from './pages/Signup.jsx';
 import Profile from './pages/Profile.jsx';
@@ -23,6 +24,7 @@ export default function App() {
 
   return (
     <Routes>
+      <Route path="/" element={user ? <Navigate to="/swipe" /> : <Landing />} />
       <Route path="/login" element={user ? <Navigate to="/swipe" /> : <Login />} />
       <Route path="/signup" element={user ? <Navigate to="/swipe" /> : <Signup />} />
       <Route path="/profile" element={<Protected><Profile /></Protected>} />
@@ -32,7 +34,7 @@ export default function App() {
       <Route path="/map" element={<Protected><MapPage /></Protected>} />
       <Route path="/overseer" element={<Protected><OverseerDashboard /></Protected>} />
       <Route path="/rankings" element={<Protected><Rankings /></Protected>} />
-      <Route path="*" element={<Navigate to={user ? '/swipe' : '/login'} />} />
+      <Route path="*" element={<Navigate to={user ? '/swipe' : '/'} />} />
     </Routes>
   );
 }
