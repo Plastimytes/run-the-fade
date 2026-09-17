@@ -120,3 +120,8 @@ Instagram used moving from a web-first product to native clients.
 - Real-time chat (currently polls every few seconds rather than websockets)
 - If photo volume grows a lot, base64-in-SQLite will bloat the database —
   worth moving to S3/Cloudinary at that point, though it's fine for an MVP
+
+
+This is usefull
+
+[run-the-fade.onrender.com/api/health](https://run-the-fade.onrender.com/api/health)
