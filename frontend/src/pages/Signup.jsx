@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
 import { useAuth } from '../AuthContext.jsx';
 import FighterAvatar from '../components/FighterAvatar.jsx';
+import authHero from '../assets/auth-hero.jpg';
 
 export default function Signup() {
   const { signup } = useAuth();
@@ -28,6 +29,8 @@ export default function Signup() {
 
   return (
     <div className="auth-screen">
+      <img src={authHero} alt="" className="auth-hero-img" />
+      <div className="auth-hero-overlay" />
       <div className="auth-card">
         <div style={{ display: 'flex', justifyContent: 'center' }}><FighterAvatar size={64} /></div>
         <h1 className="auth-title">Run<span>The</span>Fade</h1>
