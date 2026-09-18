@@ -518,6 +518,7 @@ button { font-family: var(--font-body); cursor: pointer; }
   padding: 4px 10px;
   font-family: var(--font-mono);
 }
+.status-awaiting_opponent { background: rgba(255,255,255,0.08); color: var(--text-muted); }
 .status-pending { background: rgba(35,241,224,0.15); color: var(--cyan); }
 .status-approved { background: rgba(242,230,0,0.15); color: var(--accent); }
 .status-declined, .status-cancelled { background: rgba(255,77,77,0.15); color: var(--danger); }
