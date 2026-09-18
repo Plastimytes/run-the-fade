@@ -106,6 +106,15 @@ export default function OverseerDashboard() {
             <input value={locForm.address} onChange={(e) => setLocForm((f) => ({ ...f, address: e.target.value }))} required />
           </div>
           <div className="field" style={{ gridColumn: '1 / -1' }}>
+            <label>Your fighting background</label>
+            <textarea
+              value={locForm.overseer_experience}
+              onChange={(e) => setLocForm((f) => ({ ...f, overseer_experience: e.target.value }))}
+              placeholder="Styles trained, years of experience, coaching background, etc. — required so fighters know you understand what you're overseeing."
+              required
+            />
+          </div>
+          <div className="field" style={{ gridColumn: '1 / -1' }}>
             <label>Rules</label>
             <textarea value={locForm.rules} onChange={(e) => setLocForm((f) => ({ ...f, rules: e.target.value }))} placeholder="Gloves required, 3 rounds, no weight-class mixing…" />
           </div>
