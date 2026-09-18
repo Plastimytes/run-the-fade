@@ -48,7 +48,7 @@ export default function Matches() {
   return (
     <Layout>
       <h1 className="page-title">Matches</h1>
-      <p className="page-subtitle">Mutual call-outs. The nearest overseer is called automatically when you schedule.</p>
+            <p className="page-subtitle">Mutual call-outs. Scheduling sends a challenge — check the Challenges tab once they respond.</p>
 
       {error && <div className="error-banner">{error}</div>}
 
@@ -88,7 +88,7 @@ export default function Matches() {
                     className="btn btn-secondary"
                     onClick={() => setProposing(proposing === m.match_id ? null : m.match_id)}
                   >
-                    {proposing === m.match_id ? 'Cancel' : 'Schedule Fight'}
+                    {proposing === m.match_id ? 'Cancel' : 'Send Challenge'}
                   </button>
                 </div>
               </div>
@@ -97,7 +97,7 @@ export default function Matches() {
 
               {confirmedFor?.matchId === m.match_id && (
                 <div className="error-banner" style={{ background: 'rgba(61,220,132,0.12)', borderColor: 'var(--win)', color: 'var(--win)', marginTop: 14 }}>
-                  Proposed! {confirmedFor.location ? `${confirmedFor.location} is the nearest location — its overseer has been called.` : 'The nearest overseer has been notified.'}
+                  Challenge sent! Once they accept, the overseer at {confirmedFor.location || 'the nearest location'} will be called to review it.
                 </div>
               )}
 
@@ -117,7 +117,7 @@ export default function Matches() {
                   </div>
                   <div style={{ gridColumn: '1 / -1' }}>
                     <button className="btn btn-primary" onClick={() => propose(m.match_id)}>
-                      Send Proposal
+                      Send Challenge
                     </button>
                   </div>
                 </div>

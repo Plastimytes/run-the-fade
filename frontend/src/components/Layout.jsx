@@ -6,6 +6,7 @@ import NotificationBell from './NotificationBell.jsx';
 const LINKS = [
   { to: '/swipe', label: 'Find a Fade' },
   { to: '/matches', label: 'Matches' },
+  { to: '/challenges', label: 'Challenges' },
   { to: '/fights', label: 'Fights' },
   { to: '/map', label: 'Map' },
   { to: '/overseer', label: 'Overseer' },
