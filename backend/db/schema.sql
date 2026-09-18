@@ -23,6 +23,7 @@ CREATE TABLE IF NOT EXISTS fighter_profiles (
   lat REAL,
   lng REAL,
   is_overseer INTEGER NOT NULL DEFAULT 0,
+  overseer_experience TEXT, -- self-declared fighting background, required to become an overseer
   status TEXT NOT NULL DEFAULT 'not_looking', -- 'looking' | 'not_looking'
   photo_url TEXT,
   rating INTEGER NOT NULL DEFAULT 1200,
@@ -66,7 +67,7 @@ CREATE TABLE IF NOT EXISTS fight_requests (
   location_id INTEGER NOT NULL REFERENCES locations(id),
   proposed_by INTEGER NOT NULL REFERENCES users(id),
   scheduled_at TEXT NOT NULL,
-  status TEXT NOT NULL DEFAULT 'pending', -- pending | approved | declined | completed | cancelled
+  status TEXT NOT NULL DEFAULT 'awaiting_opponent', -- awaiting_opponent | pending | approved | declined | completed | cancelled
   created_at TEXT DEFAULT (datetime('now'))
 );
 

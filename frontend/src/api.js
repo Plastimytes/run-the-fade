@@ -69,6 +69,8 @@ export const api = {
 
   proposeFight: (payload) => request('/fights', { method: 'POST', body: payload }),
   getMyFights: () => request('/fights/mine'),
+  getChallenges: () => request('/fights/challenges'),
+  respondToChallenge: (id, accept) => request(`/fights/${id}/respond`, { method: 'POST', body: { accept } }),
   getPendingApprovals: () => request('/fights/pending-approval'),
   approveFight: (id) => request(`/fights/${id}/approve`, { method: 'POST' }),
   declineFight: (id) => request(`/fights/${id}/decline`, { method: 'POST' }),

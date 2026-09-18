@@ -34,8 +34,9 @@ function fightWithDetails(id) {
   return { ...fr, match, location, overseer_name: overseer?.name || null, result: result || null };
 }
 
-// Propose a fight between two matched fighters. The nearest overseer's
-// location (by fighter location) is auto-assigned — fighters don't pick one.
+// Propose a fight (a "challenge") between two matched fighters. The nearest
+// overseer's location is pre-assigned, but the overseer isn't notified yet —
+// the other fighter has to accept the challenge first (see /:id/respond).
 router.post('/', (req, res) => {
   const { match_id, scheduled_at } = req.body;
   const match = db.prepare('SELECT * FROM matches WHERE id = ?').get(match_id);
@@ -67,19 +68,69 @@ router.post('/', (req, res) => {
 
   const info = db
     .prepare(
-      'INSERT INTO fight_requests (match_id, location_id, proposed_by, scheduled_at) VALUES (?, ?, ?, ?)'
+      `INSERT INTO fight_requests (match_id, location_id, proposed_by, scheduled_at, status)
+       VALUES (?, ?, ?, ?, 'awaiting_opponent')`
     )
     .run(match_id, nearest.id, req.userId, scheduled_at);
 
-  notify(
-    nearest.owner_id,
-    'fight_status',
-    "You've been called to oversee a fade",
-    `A fight has been proposed at ${nearest.name} — review and approve it.`,
-    '/overseer'
-  );
+  const opponentId = match.user_a === req.userId ? match.user_b : match.user_a;
+  const me = db.prepare('SELECT name FROM users WHERE id = ?').get(req.userId);
+  notify(opponentId, 'challenge', `${me.name} challenged you to a fade`, 'Review and accept or decline.', '/challenges');
 
   res.status(201).json({ fight: fightWithDetails(info.lastInsertRowid) });
+});
+
+// Challenges awaiting my response, and ones I've sent that are still pending
+// the other fighter's response.
+router.get('/challenges', (req, res) => {
+  const rows = db
+    .prepare(
+      `SELECT fr.id, fr.proposed_by FROM fight_requests fr
+       JOIN matches m ON m.id = fr.match_id
+       WHERE (m.user_a = ? OR m.user_b = ?) AND fr.status = 'awaiting_opponent'
+       ORDER BY fr.created_at DESC`
+    )
+    .all(req.userId, req.userId);
+
+  const incoming = rows.filter((r) => r.proposed_by !== req.userId).map((r) => fightWithDetails(r.id));
+  const sent = rows.filter((r) => r.proposed_by === req.userId).map((r) => fightWithDetails(r.id));
+  res.json({ incoming, sent });
+});
+
+// The challenged fighter accepts or declines. Only on acceptance does the
+// overseer get paged — no point bothering them over a challenge that never
+// gets taken up.
+router.post('/:id/respond', (req, res) => {
+  const fight = db.prepare('SELECT * FROM fight_requests WHERE id = ?').get(req.params.id);
+  if (!fight) return res.status(404).json({ error: 'Fight not found' });
+  if (fight.status !== 'awaiting_opponent') {
+    return res.status(400).json({ error: 'This challenge has already been responded to' });
+  }
+  const match = db.prepare('SELECT * FROM matches WHERE id = ?').get(fight.match_id);
+  if (req.userId === fight.proposed_by || (req.userId !== match.user_a && req.userId !== match.user_b)) {
+    return res.status(403).json({ error: 'Only the challenged fighter can respond to this' });
+  }
+
+  const { accept } = req.body;
+  const me = db.prepare('SELECT name FROM users WHERE id = ?').get(req.userId);
+
+  if (accept) {
+    db.prepare("UPDATE fight_requests SET status = 'pending' WHERE id = ?").run(fight.id);
+    const location = db.prepare('SELECT * FROM locations WHERE id = ?').get(fight.location_id);
+    notify(
+      location.owner_id,
+      'fight_status',
+      "You've been called to oversee a fade",
+      `A fight has been proposed at ${location.name} — review and approve it.`,
+      '/overseer'
+    );
+    notify(fight.proposed_by, 'challenge', `${me.name} accepted your challenge`, 'Waiting on the overseer to approve.', '/fights');
+  } else {
+    db.prepare("UPDATE fight_requests SET status = 'declined' WHERE id = ?").run(fight.id);
+    notify(fight.proposed_by, 'challenge', `${me.name} declined your challenge`, '', '/challenges');
+  }
+
+  res.json({ fight: fightWithDetails(fight.id) });
 });
 
 // Fights I'm part of, or fights pending at locations I oversee

@@ -28,5 +28,8 @@ const resultCols = db.prepare("PRAGMA table_info(fight_results)").all().map((c) 
 if (!resultCols.includes('photo_url')) {
   db.exec('ALTER TABLE fight_results ADD COLUMN photo_url TEXT');
 }
+if (!cols.includes('overseer_experience')) {
+  db.exec('ALTER TABLE fighter_profiles ADD COLUMN overseer_experience TEXT');
+}
 
 export default db;
