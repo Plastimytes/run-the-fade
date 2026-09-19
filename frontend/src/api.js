@@ -35,6 +35,40 @@ async function request(path, { method = 'GET', body, auth = true } = {}) {
   return data;
 }
 
+function getAdminToken() {
+  return localStorage.getItem('rtf_admin_token');
+}
+export function setAdminToken(token) {
+  if (token) localStorage.setItem('rtf_admin_token', token);
+  else localStorage.removeItem('rtf_admin_token');
+}
+
+async function adminRequest(path, { method = 'GET', body, auth = true } = {}) {
+  const headers = { 'Content-Type': 'application/json' };
+  if (auth) {
+    const token = getAdminToken();
+    if (token) headers.Authorization = `Bearer ${token}`;
+  }
+  let res;
+  try {
+    res = await fetch(`${BASE_URL}${path}`, {
+      method,
+      headers,
+      body: body ? JSON.stringify(body) : undefined,
+    });
+  } catch {
+    throw new Error('API unavailable — check the backend connection and VITE_API_URL.');
+  }
+  const data = await res.json().catch(() => ({}));
+  if (!res.ok) throw new Error(data.error || 'Something went wrong');
+  return data;
+}
+
+export const adminApi = {
+  login: (payload) => adminRequest('/admin/login', { method: 'POST', body: payload, auth: false }),
+  getMe: () => adminRequest('/admin/me'),
+};
+
 export const api = {
   signup: (payload) => request('/auth/signup', { method: 'POST', body: payload, auth: false }),
   login: (payload) => request('/auth/login', { method: 'POST', body: payload, auth: false }),

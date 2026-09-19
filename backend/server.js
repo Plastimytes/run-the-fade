@@ -8,6 +8,7 @@ import fightRoutes from './routes/fights.js';
 import rankingRoutes from './routes/rankings.js';
 import messageRoutes from './routes/messages.js';
 import notificationRoutes from './routes/notifications.js';
+import adminRoutes from './routes/admin.js';
 
 const app = express();
 app.use(cors());
@@ -23,6 +24,7 @@ app.use('/api/fights', fightRoutes);
 app.use('/api/rankings', rankingRoutes);
 app.use('/api/matches', messageRoutes);
 app.use('/api/notifications', notificationRoutes);
+app.use('/api/admin', adminRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err);

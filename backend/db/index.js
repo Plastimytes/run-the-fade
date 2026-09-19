@@ -31,5 +31,9 @@ if (!resultCols.includes('photo_url')) {
 if (!cols.includes('overseer_experience')) {
   db.exec('ALTER TABLE fighter_profiles ADD COLUMN overseer_experience TEXT');
 }
+const userCols = db.prepare("PRAGMA table_info(users)").all().map((c) => c.name);
+if (!userCols.includes('is_admin')) {
+  db.exec('ALTER TABLE users ADD COLUMN is_admin INTEGER NOT NULL DEFAULT 0');
+}
 
 export default db;

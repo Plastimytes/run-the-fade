@@ -1,5 +1,6 @@
 import { Routes, Route, Navigate } from 'react-router-dom';
 import { useAuth } from './AuthContext.jsx';
+import { useAdminAuth } from './AdminAuthContext.jsx';
 import Landing from './pages/Landing.jsx';
 import Login from './pages/Login.jsx';
 import Signup from './pages/Signup.jsx';
@@ -12,11 +13,20 @@ import Fighters from './pages/Fighters.jsx';
 import OverseerDashboard from './pages/OverseerDashboard.jsx';
 import Rankings from './pages/Rankings.jsx';
 import MapPage from './pages/Map.jsx';
+import AdminLogin from './admin/AdminLogin.jsx';
+import AdminDashboard from './admin/AdminDashboard.jsx';
 
 function Protected({ children }) {
   const { user, loading } = useAuth();
   if (loading) return null;
   if (!user) return <Navigate to="/login" replace />;
+  return children;
+}
+
+function AdminProtected({ children }) {
+  const { admin, loading } = useAdminAuth();
+  if (loading) return null;
+  if (!admin) return <Navigate to="/admin/login" replace />;
   return children;
 }
 
@@ -38,6 +48,8 @@ export default function App() {
       <Route path="/map" element={<Protected><MapPage /></Protected>} />
       <Route path="/overseer" element={<Protected><OverseerDashboard /></Protected>} />
       <Route path="/rankings" element={<Protected><Rankings /></Protected>} />
+      <Route path="/admin/login" element={<AdminLogin />} />
+      <Route path="/admin" element={<AdminProtected><AdminDashboard /></AdminProtected>} />
       <Route path="*" element={<Navigate to={user ? '/swipe' : '/'} />} />
     </Routes>
   );
