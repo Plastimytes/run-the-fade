@@ -15,6 +15,9 @@ import Rankings from './pages/Rankings.jsx';
 import MapPage from './pages/Map.jsx';
 import AdminLogin from './admin/AdminLogin.jsx';
 import AdminDashboard from './admin/AdminDashboard.jsx';
+import AdminFighters from './admin/AdminFighters.jsx';
+import AdminFights from './admin/AdminFights.jsx';
+import AdminLocations from './admin/AdminLocations.jsx';
 
 function Protected({ children }) {
   const { user, loading } = useAuth();
@@ -50,6 +53,9 @@ export default function App() {
       <Route path="/rankings" element={<Protected><Rankings /></Protected>} />
       <Route path="/admin/login" element={<AdminLogin />} />
       <Route path="/admin" element={<AdminProtected><AdminDashboard /></AdminProtected>} />
+      <Route path="/admin/fighters" element={<AdminProtected><AdminFighters /></AdminProtected>} />
+      <Route path="/admin/fights" element={<AdminProtected><AdminFights /></AdminProtected>} />
+      <Route path="/admin/locations" element={<AdminProtected><AdminLocations /></AdminProtected>} />
       <Route path="*" element={<Navigate to={user ? '/swipe' : '/'} />} />
     </Routes>
   );
