@@ -9,6 +9,7 @@ import rankingRoutes from './routes/rankings.js';
 import messageRoutes from './routes/messages.js';
 import notificationRoutes from './routes/notifications.js';
 import adminRoutes from './routes/admin.js';
+import adminSetupRoutes from './routes/admin-setup.js';
 
 const app = express();
 app.use(cors());
@@ -25,6 +26,8 @@ app.use('/api/rankings', rankingRoutes);
 app.use('/api/matches', messageRoutes);
 app.use('/api/notifications', notificationRoutes);
 app.use('/api/admin', adminRoutes);
+// Temporary one-time admin creation endpoint. Remove after use.
+app.use('/api/admin-setup', adminSetupRoutes);
 
 app.use((err, req, res, next) => {
   console.error(err);
