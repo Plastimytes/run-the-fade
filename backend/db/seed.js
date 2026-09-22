@@ -12,11 +12,11 @@ const PASSWORD = 'RunTheFade1!';
 
 const FIGHTERS = [
   { name: 'Amara Okello', email: 'amara@runthefade.app', weight_class: 'Bantamweight', height_class: 'Short', fighting_style: 'Muay Thai', city: 'Kampala', lat: 0.3476, lng: 32.5825, strengths: ['Speed', 'Footwork'], bio: 'Fast hands, faster feet. Kampala born and raised.' },
-  { name: 'Kato Ssentongo', email: 'kato@runthefade.app', weight_class: 'Welterweight', height_class: 'Medium', fighting_style: 'Boxing', city: 'Mukono', lat: 0.3533, lng: 32.7553, strengths: ['Power', 'Chin'], bio: 'Runs Mukono Fight Club. Undefeated at home.', overseer: { name: 'Mukono Fight Club', address: 'Mukono Rd, Mukono', rules: 'Gloves mandatory. 3 rounds. No weight-class mixing.' } },
+  { name: 'Kato Ssentongo', email: 'kato@runthefade.app', weight_class: 'Welterweight', height_class: 'Medium', fighting_style: 'Boxing', city: 'Mukono', lat: 0.3533, lng: 32.7553, strengths: ['Power', 'Chin'], bio: 'Runs Mukono Fight Club. Undefeated at home.', overseer: { name: 'Mukono Fight Club', address: 'Mukono Rd, Mukono', rules: 'Gloves mandatory. 3 rounds. No weight-class mixing.', experience: '12 years boxing, 4 as a licensed amateur coach.' } },
   { name: 'Grace Nabirye', email: 'grace@runthefade.app', weight_class: 'Featherweight', height_class: 'Medium', fighting_style: 'BJJ', city: 'Jinja', lat: 0.4478, lng: 33.2026, strengths: ['Grappling', 'Cardio'], bio: 'Ground game specialist out of Jinja.' },
   { name: 'Brian Tumwesigye', email: 'brian@runthefade.app', weight_class: 'Middleweight', height_class: 'Tall', fighting_style: 'Wrestling', city: 'Entebbe', lat: 0.0512, lng: 32.4637, strengths: ['Takedowns', 'Clinch work'], bio: 'Collegiate wrestling background, now fighting out of Entebbe.' },
   { name: 'Faith Namutebi', email: 'faith@runthefade.app', weight_class: 'Lightweight', height_class: 'Short', fighting_style: 'Kickboxing', city: 'Mbale', lat: 1.0801, lng: 34.1756, strengths: ['Speed', 'Counter-punching'], bio: 'Mbale kickboxing champ, 2024 regional title.' },
-  { name: 'Daniel Okwir', email: 'daniel@runthefade.app', weight_class: 'Heavyweight', height_class: 'Tall', fighting_style: 'MMA', city: 'Gulu', lat: 2.7796, lng: 32.2990, strengths: ['Power', 'Reach'], bio: 'Runs Northern Grit Arena. Heavy hands, longer reach.', overseer: { name: 'Northern Grit Arena', address: 'Layibi Rd, Gulu', rules: 'MMA gloves. 3x5 min rounds. Medical check required.' } },
+  { name: 'Daniel Okwir', email: 'daniel@runthefade.app', weight_class: 'Heavyweight', height_class: 'Tall', fighting_style: 'MMA', city: 'Gulu', lat: 2.7796, lng: 32.2990, strengths: ['Power', 'Reach'], bio: 'Runs Northern Grit Arena. Heavy hands, longer reach.', overseer: { name: 'Northern Grit Arena', address: 'Layibi Rd, Gulu', rules: 'MMA gloves. 3x5 min rounds. Medical check required.', experience: '8 years MMA, former regional amateur champion.' } },
   { name: 'Patricia Akello', email: 'patricia@runthefade.app', weight_class: 'Flyweight', height_class: 'Short', fighting_style: 'Judo', city: 'Mbarara', lat: -0.6072, lng: 30.6545, strengths: ['Footwork', 'Grappling'], bio: 'Judo black belt, quick throws.' },
   { name: 'Isaac Byaruhanga', email: 'isaac@runthefade.app', weight_class: 'Light Heavyweight', height_class: 'Tall', fighting_style: 'Karate', city: 'Masaka', lat: -0.3308, lng: 31.7341, strengths: ['Reach', 'Counter-punching'], bio: 'Shotokan karate, sharp counters.' },
   { name: 'Sarah Nakato', email: 'sarah@runthefade.app', weight_class: 'Welterweight', height_class: 'Medium', fighting_style: 'Taekwondo', city: 'Soroti', lat: 1.7146, lng: 33.6111, strengths: ['Speed', 'Footwork'], bio: 'Kicks first, asks questions never.' },
@@ -61,12 +61,12 @@ function run() {
 
     db.prepare(
       `INSERT INTO fighter_profiles
-        (user_id, weight_class, height_class, fighting_style, strengths, bio, city, lat, lng, status, is_overseer)
-       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'looking', ?)`
+        (user_id, weight_class, height_class, fighting_style, strengths, bio, city, lat, lng, status, is_overseer, overseer_experience)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, 'looking', ?, ?)`
     ).run(
       userId, f.weight_class, f.height_class, f.fighting_style,
       JSON.stringify(f.strengths), f.bio, f.city, f.lat, f.lng,
-      f.overseer ? 1 : 0
+      f.overseer ? 1 : 0, f.overseer ? f.overseer.experience : null
     );
 
     if (f.overseer) {
@@ -81,7 +81,8 @@ function run() {
   const kampalaLoc = db
     .prepare('INSERT INTO locations (owner_id, name, address, lat, lng, rules) VALUES (?, ?, ?, ?, ?, ?)')
     .run(ids['amara@runthefade.app'], 'Kampala Underground', 'Nakivubo Rd, Kampala', 0.3136, 32.5811, 'Bare-knuckle sparring. Overseer discretion on stoppage.');
-  db.prepare('UPDATE fighter_profiles SET is_overseer = 1 WHERE user_id = ?').run(ids['amara@runthefade.app']);
+  db.prepare('UPDATE fighter_profiles SET is_overseer = 1, overseer_experience = ? WHERE user_id = ?')
+    .run('6 years Muay Thai, runs weekend sparring sessions in Kampala.', ids['amara@runthefade.app']);
   const anyLocationId = kampalaLoc.lastInsertRowid;
 
   for (const [emailA, emailB, outcome] of FIGHTS) {
