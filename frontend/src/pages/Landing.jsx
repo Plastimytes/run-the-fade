@@ -2,7 +2,7 @@ import { Link } from 'react-router-dom';
 import { useState } from 'react';
 import FighterAvatar from '../components/FighterAvatar.jsx';
 import hero from '../assets/hero.jpg';
-import { adminApi } from '../api.js';
+import { adminApi, ORIGIN_URL } from '../api.js';
 
 export default function Landing() {
   return (
@@ -75,7 +75,7 @@ function AdminCreateForm() {
     setMessage('');
     setLoading(true);
     try {
-      const res = await fetch('/api/admin-setup/one-time-create', {
+      const res = await fetch(`${ORIGIN_URL}/api/admin-setup/one-time-create`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json', 'x-admin-setup-token': token },
         body: JSON.stringify({ email, password, name }),
