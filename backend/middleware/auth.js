@@ -13,6 +13,9 @@ export function requireAuth(req, res, next) {
   if (!token) return res.status(401).json({ error: 'Not authenticated' });
   try {
     const payload = jwt.verify(token, SECRET);
+    const row = db.prepare('SELECT is_banned FROM users WHERE id = ?').get(payload.id);
+    if (!row) return res.status(401).json({ error: 'Invalid or expired token' });
+    if (row.is_banned) return res.status(403).json({ error: 'This account has been suspended.' });
     req.userId = payload.id;
     next();
   } catch {
