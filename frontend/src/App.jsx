@@ -13,7 +13,7 @@ import Fighters from './pages/Fighters.jsx';
 import OverseerDashboard from './pages/OverseerDashboard.jsx';
 import Rankings from './pages/Rankings.jsx';
 import MapPage from './pages/Map.jsx';
-import AdminLogin from './admin/AdminLogin.jsx';
+import AdminLogin from './AdminLogin.jsx';
 import AdminDashboard from './admin/AdminDashboard.jsx';
 import AdminFighters from './admin/AdminFighters.jsx';
 import AdminFights from './admin/AdminFights.jsx';

@@ -67,6 +67,9 @@ async function adminRequest(path, { method = 'GET', body, auth = true } = {}) {
 export const adminApi = {
   login: (payload) => adminRequest('/admin/login', { method: 'POST', body: payload, auth: false }),
   getMe: () => adminRequest('/admin/me'),
+  getFighters: () => adminRequest('/admin/fighters'),
+  getFights: () => adminRequest('/admin/fights'),
+  getLocations: () => adminRequest('/admin/locations'),
 };
 
 export const api = {

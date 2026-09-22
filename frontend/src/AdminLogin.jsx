@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
-import { useAdminAuth } from '../AdminAuthContext.jsx';
+import { useAdminAuth } from './AdminAuthContext.jsx';
 
 export default function AdminLogin() {
   const { login } = useAdminAuth();
